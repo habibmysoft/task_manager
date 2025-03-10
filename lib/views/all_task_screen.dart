@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:task_management/views/widgets/app_bar.dart';
 import 'package:task_management/views/widgets/gradient_page.dart';
 import '../view_models/task_view_model.dart';
 
@@ -11,10 +12,7 @@ class AllTasksScreen extends ConsumerWidget {
     final tasks = ref.watch(taskViewModelProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        title: Text('All Tasks'),
-      ),
+      appBar: mainAppBar('All Task'),
       body: gradientPage(ListView.builder(
         itemCount: tasks.length,
         itemBuilder: (context, index) {

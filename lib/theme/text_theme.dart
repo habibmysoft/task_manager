@@ -13,8 +13,19 @@ Widget text_28_700(String? value,
           color: color, fontWeight: FontWeight.w700, fontSize: 28));
 }
 
+Widget text_24_500(String? value,
+    {Color? color = textColor,
+    TextAlign? textAlign,
+    double fontSize = 24,
+    int? maxLines = 2}) {
+  return Text(value ?? "",
+      maxLines: maxLines,
+      overflow: maxLines == null ? null : TextOverflow.ellipsis,
+      style: GoogleFonts.poppins(
+          color: color, fontWeight: FontWeight.w500, fontSize: fontSize));
+}
 Widget text_24_700(String? value,
-    {Color color = textColor,
+    {Color? color = textColor,
     TextAlign? textAlign,
     double fontSize = 24,
     int? maxLines = 2}) {
@@ -30,6 +41,13 @@ Widget text_20_700(String? value,
   return Text(value ?? "",
       style: GoogleFonts.poppins(
           color: color, fontWeight: FontWeight.w700, fontSize: 20));
+}
+
+Widget text_20_500(String? value,
+    {Color color = textColor, TextAlign? textAlign}) {
+  return Text(value ?? "",
+      style: GoogleFonts.poppins(
+          color: color, fontWeight: FontWeight.w500, fontSize: 20));
 }
 
 
@@ -133,9 +151,11 @@ Widget text_12_500(String? value, {Color color = textColor}) {
   );
 }
 
-Widget text_12_400(String? value, {Color color = textColor,TextAlign? textAlign,}) {
+Widget text_12_400(String? value, {Color color = textColor,TextAlign? textAlign, int? maxLines}) {
   return Text(
     value ?? "",
+    maxLines: maxLines,
+    overflow: maxLines != null ? TextOverflow.ellipsis : null,
     style: GoogleFonts.poppins(
         color: color, fontWeight: FontWeight.w400, fontSize: 12),
     textAlign: textAlign,
@@ -148,6 +168,40 @@ Widget text_10_400(String? value, {Color color = textColor}) {
           color: color, fontWeight: FontWeight.w400, fontSize: 10));
 }
 
+Widget text_8_600(String? value, {Color color = textColor}) {
+  return Text(value ?? "",
+      style: GoogleFonts.poppins(
+          color: color, fontWeight: FontWeight.w600, fontSize: 8));
+}
+
+Widget text_8_400(String? value, {Color color = textColor}) {
+  return Text(value ?? "",
+      style: GoogleFonts.poppins(
+          color: color, fontWeight: FontWeight.w400, fontSize: 8));
+}
+
+Widget textCount(int count, {int length = 45}){
+  return Align(
+    alignment: Alignment.centerRight,
+    child: RichText(
+      text: TextSpan(
+        text: '$count ',
+        style: GoogleFonts.poppins(
+            fontWeight: FontWeight.w600, fontSize: 8, color: Color(0xFF613BE7),),
+        children:  <TextSpan>[
+          TextSpan(
+              text: '/$length',
+              style: GoogleFonts.poppins(
+                  fontWeight: FontWeight.w400, fontSize: 8, color: Color(0xFF6E7591)),
+
+          ),
+        ],
+      ),
+      textAlign: TextAlign.center,
+    ),
+  );
+
+}
 
 Widget richTextResend() {
   return RichText(

@@ -1,17 +1,13 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-
 import '../models/tasks.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
-  static Database? _database;
-
-  factory DatabaseHelper() {
-    return _instance;
-  }
-
+  factory DatabaseHelper() => _instance;
   DatabaseHelper._internal();
+
+  static Database? _database;
 
   Future<Database> get database async {
     if (_database != null) return _database!;
@@ -20,25 +16,29 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    final dbPath = await getDatabasesPath();
-    final path = join(dbPath, 'tasks.db');
-
+    String path = join(await getDatabasesPath(), 'tasks.db');
     return await openDatabase(
       path,
-      version: 1,
-      onCreate: _onCreate,
+      version: 2, // ⬅️ Old: 1, New: 2 (Increase version for migration)
+      onCreate: (db, version) async {
+        await db.execute('''
+          CREATE TABLE tasks (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            title TEXT NOT NULL,
+            description TEXT NOT NULL,
+            isCompleted INTEGER NOT NULL DEFAULT 0,
+            startDate TEXT,
+            endDate TEXT
+          )
+        ''');
+      },
+      onUpgrade: (db, oldVersion, newVersion) async {
+        if (oldVersion < 2) {
+          await db.execute('ALTER TABLE tasks ADD COLUMN startDate TEXT;');
+          await db.execute('ALTER TABLE tasks ADD COLUMN endDate TEXT;');
+        }
+      },
     );
-  }
-
-  Future<void> _onCreate(Database db, int version) async {
-    await db.execute('''
-      CREATE TABLE tasks(
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        title TEXT,
-        description TEXT,
-        isCompleted INTEGER
-      )
-    ''');
   }
 
   Future<int> insertTask(Task task) async {
@@ -49,7 +49,9 @@ class DatabaseHelper {
   Future<List<Task>> getTasks() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.query('tasks');
-    return List.generate(maps.length, (i) => Task.fromMap(maps[i]));
+    return List.generate(maps.length, (i) {
+      return Task.fromMap(maps[i]);
+    });
   }
 
   Future<int> updateTask(Task task) async {
