@@ -39,21 +39,23 @@ Widget weekSlider(List<DateTime> dates, WidgetRef ref, DateTime selectedDate) {
             ),
             alignment: Alignment.center,
             child: Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  text_10_400(
-                    DateFormat('E').format(date),
-                    color: isSelected ? whiteColor : purple88,
-                    textAlign: TextAlign.center,
-                  ),
-                  text_20_600(
-                    DateFormat('d').format(date),
-                    color: isSelected ? whiteColor : purple61,
-                    fontSize: isSelected ? 20 : 14,
-                    textAlign: TextAlign.center,
-                  ),
-                ],
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    text_10_400(
+                      DateFormat('E').format(date),
+                      color: isSelected ? whiteColor : purple88,
+                      textAlign: TextAlign.center,
+                    ),
+                    text_20_600(
+                      DateFormat('d').format(date),
+                      color: isSelected ? whiteColor : purple61,
+                      fontSize: isSelected ? 20 : 14,
+                      textAlign: TextAlign.center,
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
