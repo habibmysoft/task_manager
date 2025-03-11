@@ -1,44 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'all_task_screen.dart';
-import 'home_screen.dart';
-import 'create_task_screen.dart';
+import 'package:task_management/theme/colors.dart';
+import 'package:task_management/utils/assets.dart';
+import 'package:task_management/views/widgets/gradient_scaffold.dart';
+import '../view_models/dashboard_model.dart';
 
-class Dashboard extends ConsumerStatefulWidget {
+class Dashboard extends ConsumerWidget {
   const Dashboard({super.key});
 
   @override
-  ConsumerState<Dashboard> createState() => _DashboardState();
-}
+  Widget build(BuildContext context, WidgetRef ref) {
+    final selectedIndex = ref.watch(dashboardViewModelProvider);
+    final screens = ref.watch(dashboardViewModelProvider.notifier).screens;
 
-class _DashboardState extends ConsumerState<Dashboard> {
-  int _selectedIndex = 0;
-
-  final List<Widget> _screens = [
-    HomeScreen(),
-    CreateTaskScreen(),
-    AllTasksScreen(),
-  ];
-
-    _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      extendBody: true,
-      body: _screens[_selectedIndex],
-      bottomNavigationBar: bottomNav(),
+    return gradientScaffold(
+      body: screens[selectedIndex],
+      bottomNavigationBar: bottomNav(ref, selectedIndex),
+      extendBody: true
     );
+    // return Scaffold(
+    //   extendBody: true,
+    //   body: screens[selectedIndex],
+    //   bottomNavigationBar: bottomNav(ref, selectedIndex),
+    // );
   }
 
-  Widget bottomNav() {
+  Widget bottomNav(WidgetRef ref, int selectedIndex) {
     return Container(
       decoration: BoxDecoration(
-        color: Color(0xFFFFFFFF),
+        color: whiteColor,
         borderRadius: BorderRadius.circular(141),
       ),
       height: 68,
@@ -48,9 +38,30 @@ class _DashboardState extends ConsumerState<Dashboard> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
-          navItem(isSelected: _selectedIndex == 0 , icon: Icons.home, onTap: () => _onItemTapped(0)),
-          navItem(isSelected: _selectedIndex == 1 , icon: Icons.task, onTap: () => _onItemTapped(1)),
-          navItem(isSelected: _selectedIndex == 2 , icon: Icons.calendar_month, onTap: () => _onItemTapped(2)),
+          navItem(
+            isSelected: selectedIndex == 0,
+            icon: selectedIndex == 0 ? Assets.homePurple : Assets.homeGrey,
+            onTap:
+                () => ref
+                    .read(dashboardViewModelProvider.notifier)
+                    .setSelectedIndex(0),
+          ),
+          navItem(
+            isSelected: selectedIndex == 1,
+            icon: selectedIndex == 1 ? Assets.taskPurple : Assets.taskGrey,
+            onTap:
+                () => ref
+                    .read(dashboardViewModelProvider.notifier)
+                    .setSelectedIndex(1),
+          ),
+          navItem(
+            isSelected: selectedIndex == 2,
+            icon: selectedIndex == 2 ? Assets.allTaskPurple : Assets.allTaskGrey,
+            onTap:
+                () => ref
+                    .read(dashboardViewModelProvider.notifier)
+                    .setSelectedIndex(2),
+          ),
         ],
       ),
     );
@@ -58,19 +69,27 @@ class _DashboardState extends ConsumerState<Dashboard> {
 
   Widget navItem({
     required bool isSelected,
-    required IconData icon,
+    required String icon,
     required VoidCallback onTap,
   }) {
     return Expanded(
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          padding: isSelected ? EdgeInsets.symmetric(horizontal: 41, vertical: 18) : null,
+          padding:
+              isSelected
+                  ? EdgeInsets.symmetric(horizontal: 41, vertical: 18)
+                  : null,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(118),
-            color: isSelected ? Color(0xFFF0F2F8) : Color(0xFFFFFFFF),
+            color: isSelected ? white0F : whiteColor,
           ),
-          child: Icon(icon, size: 24, color: isSelected ? Color(0xFF613BE7) : Color(0xFF93989D)),
+          child: Image.asset(icon, height: 24, width: 24, )
+          // child: Icon(
+          //   icon,
+          //   size: 24,
+          //   color: isSelected ? purple61 : grey93,
+          // ),
         ),
       ),
     );

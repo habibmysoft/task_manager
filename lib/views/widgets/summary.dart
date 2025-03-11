@@ -1,21 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:task_management/theme/colors.dart';
 import 'package:task_management/theme/text_theme.dart';
 import 'package:task_management/views/widgets/summary_card.dart';
+import '../../view_models/task_view_model.dart';
 
-Widget summary(){
-  return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      text_20_500('Summary'),
-      SizedBox(height: 12,),
-      Row(
+Widget summary() {
+  return Consumer(
+    builder: (context, ref, child) {
+      final tasks = ref.watch(taskViewModelProvider);
+
+      final assignedTasks = tasks.length;
+
+      final completedTasks = tasks.where((task) => task.isCompleted).length;
+
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          summaryCard(title: "Assigned tasks", value: '21', color: Color(0xFFEEEFFF), valueColor: Color(0xFF613BE7), borderColor: Color(0xFF613BE7)),
-          SizedBox(width: 8,),
-          summaryCard(title: "Completed tasks", value: '31', color: Color(0xFFDEFFE8), valueColor: Color(0xFF009F76), borderColor: Color(0xFF009F76)),
+          text_20_500('Summary'),
+          SizedBox(height: 12,),
+          Row(
+            children: [
+              summaryCard(
+                  title: "Assigned tasks",
+                  value: assignedTasks.toString(),
+                  color: purpleEE,
+                  valueColor: purple61,
+                  borderColor: purple61
+              ),
+              SizedBox(width: 8,),
+              summaryCard(
+                  title: "Completed tasks",
+                  value: completedTasks.toString(),
+                  color: greenDe,
+                  valueColor: green00,
+                  borderColor: green00
+              ),
+            ],
+          ),
+          SizedBox(height: 20,)
         ],
-      ),
-      SizedBox(height: 20,)
-    ],
+      );
+    },
   );
 }

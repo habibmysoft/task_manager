@@ -6,8 +6,18 @@ final taskViewModelProvider = StateNotifierProvider<TaskViewModel, List<Task>>(
       (ref) => TaskViewModel(),
 );
 
+final completedFilterProvider = StateProvider<bool>((ref) => true);
+
+final taskProvider = Provider<Task>((ref) {
+  throw UnimplementedError('Task must be overridden before use.');
+});
+
+final selectedDateProvider = StateProvider<DateTime>((ref) => DateTime.now());
+
 class TaskViewModel extends StateNotifier<List<Task>> {
-  TaskViewModel() : super([]);
+  TaskViewModel() : super([]) {
+    fetchTasks();
+  }
 
   final DatabaseHelper _dbHelper = DatabaseHelper();
 
@@ -30,4 +40,32 @@ class TaskViewModel extends StateNotifier<List<Task>> {
     await _dbHelper.deleteTask(id);
     fetchTasks();
   }
+
+
+  bool _showCompletedOnly = true;
+  DateTime _selectedDate = DateTime.now();
+
+  void toggleCompletedFilter(bool showCompleted) {
+    _showCompletedOnly = showCompleted;
+    state = [...state];
+  }
+
+  void setSelectedDate(DateTime date) {
+    _selectedDate = date;
+    state = [...state];
+  }
+
+  List<Task> get filteredTasks {
+    return state.where((task) {
+      final matchesCompletion = _showCompletedOnly ? task.isCompleted : true;
+
+      final matchesDate = _selectedDate.isAfter(task.startDate) ||
+          _selectedDate.isAtSameMomentAs(task.startDate) &&
+              _selectedDate.isBefore(task.endDate) ||
+          _selectedDate.isAtSameMomentAs(task.endDate);
+
+      return matchesCompletion && matchesDate;
+    }).toList();
+  }
+
 }

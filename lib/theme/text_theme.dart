@@ -50,6 +50,13 @@ Widget text_20_500(String? value,
           color: color, fontWeight: FontWeight.w500, fontSize: 20));
 }
 
+Widget text_20_600(String? value,
+    {Color color = textColor, TextAlign? textAlign, double fontSize = 20}) {
+  return Text(value ?? "",
+      textAlign: textAlign,
+      style: GoogleFonts.poppins(
+          color: color, fontWeight: FontWeight.w600, fontSize: fontSize));
+}
 
 Widget text_18_700(String? value, {Color color = textColor,TextAlign? textAlign}) {
   return Text(value ?? "",
@@ -162,10 +169,11 @@ Widget text_12_400(String? value, {Color color = textColor,TextAlign? textAlign,
   );
 }
 
-Widget text_10_400(String? value, {Color color = textColor}) {
+Widget text_10_400(String? value, {Color color = textColor, TextAlign? textAlign, double fontSize = 10}) {
   return Text(value ?? "",
+      textAlign: textAlign,
       style: GoogleFonts.poppins(
-          color: color, fontWeight: FontWeight.w400, fontSize: 10));
+          color: color, fontWeight: FontWeight.w400, fontSize: fontSize));
 }
 
 Widget text_8_600(String? value, {Color color = textColor}) {
@@ -180,19 +188,19 @@ Widget text_8_400(String? value, {Color color = textColor}) {
           color: color, fontWeight: FontWeight.w400, fontSize: 8));
 }
 
-Widget textCount(int count, {int length = 45}){
+Widget textCount(int count, {int length = 455}){
   return Align(
     alignment: Alignment.centerRight,
     child: RichText(
       text: TextSpan(
         text: '$count ',
         style: GoogleFonts.poppins(
-            fontWeight: FontWeight.w600, fontSize: 8, color: Color(0xFF613BE7),),
+            fontWeight: FontWeight.w600, fontSize: 8, color: purple61,),
         children:  <TextSpan>[
           TextSpan(
               text: '/$length',
               style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.w400, fontSize: 8, color: Color(0xFF6E7591)),
+                  fontWeight: FontWeight.w400, fontSize: 8, color: grey6E),
 
           ),
         ],
