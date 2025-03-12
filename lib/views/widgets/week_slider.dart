@@ -9,7 +9,8 @@ import 'package:carousel_slider/carousel_slider.dart';
 Widget weekSlider(List<DateTime> dates, WidgetRef ref, DateTime selectedDate) {
 
   int initialIndex = dates.indexWhere((date) => DateUtils.isSameDay(date, selectedDate));
-  initialIndex = initialIndex == -1 ? 3 : initialIndex; // Default to Today
+  initialIndex = initialIndex == -1 ? 3 : initialIndex;
+
 
   return SizedBox(
     height: 64,

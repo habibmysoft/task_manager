@@ -22,18 +22,10 @@ class AllTasksScreen extends ConsumerWidget {
           (index) => DateTime.now().subtract(Duration(days: 3 - index)),
     );
 
-    // final filteredTasks = tasks.where((task) {
-    //   return task.startDate.isBefore(selectedDate.add(Duration(days: 1))) &&
-    //       task.endDate.isAfter(selectedDate.subtract(Duration(days: 1)));
-    // }).toList();
-
     final filteredTasks = tasks.where((task) {
       return selectedDate.isAfter(task.startDate) &&
           selectedDate.isBefore(task.endDate.add(Duration(days: 1)));
     }).toList();
-
-
-
 
     return gradientScaffold(
       appBar: mainAppBar('All Task', action: createTask(context, ref)),

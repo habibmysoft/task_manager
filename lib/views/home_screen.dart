@@ -14,6 +14,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final isCompletedFilter = ref.watch(completedFilterProvider);
+
     return SafeArea(
       bottom: false,
       child: gradientScaffold(body: ListView(
